@@ -8,19 +8,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.github.hojoungjang.pt2_implementation.processor.LoginProcessor;
 import com.github.hojoungjang.pt2_implementation.service.LoggedUserManagementService;
+import com.github.hojoungjang.pt2_implementation.service.LoginCountService;
 
 @Controller
 public class LoginController {
 
     private final LoginProcessor loginProcessor;
     private final LoggedUserManagementService lumService;
+    private final LoginCountService loginCountService;
 
     public LoginController(
         LoginProcessor loginProcessor,
-        LoggedUserManagementService lumService
+        LoggedUserManagementService lumService,
+        LoginCountService loginCountService
     ) {
         this.loginProcessor = loginProcessor;
         this.lumService = lumService;
+        this.loginCountService = loginCountService;
     }
 
     @GetMapping("/main")
@@ -36,6 +40,7 @@ public class LoginController {
         if (sessionUsername == null) {
             return "redirect:/";
         }
+        page.addAttribute("loginCount", loginCountService.getCount());
         page.addAttribute("username", sessionUsername);
         return "main.html";
     }
@@ -44,8 +49,7 @@ public class LoginController {
     public String loginGet(Model page) {
         String sessionUsername = lumService.getUsername();
         if (sessionUsername != null) {
-            page.addAttribute("username", sessionUsername);
-            return "main.html";
+            return "redirect:/main";
         }
         return "login.html";
     }
@@ -61,8 +65,7 @@ public class LoginController {
         boolean loggedIn = loginProcessor.login();
 
         if (loggedIn) {
-            page.addAttribute("username", lumService.getUsername());
-            return "main.html";
+            return "redirect:/main";
         }
         page.addAttribute("message", "Login failed!");
         return "login.html";

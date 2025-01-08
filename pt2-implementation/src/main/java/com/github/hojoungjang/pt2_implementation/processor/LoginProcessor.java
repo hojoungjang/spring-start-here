@@ -4,17 +4,23 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
 import com.github.hojoungjang.pt2_implementation.service.LoggedUserManagementService;
+import com.github.hojoungjang.pt2_implementation.service.LoginCountService;
 
 @Component
 @RequestScope
 public class LoginProcessor {
+    private final LoggedUserManagementService loggedUserManagementService;
+    private final LoginCountService loginCountService;
+    
     private String username;
     private String password;
 
-    private final LoggedUserManagementService loggedUserManagementService;
-
-    public LoginProcessor(LoggedUserManagementService loggedUserManagementService) {
+    public LoginProcessor(
+        LoggedUserManagementService loggedUserManagementService,
+        LoginCountService loginCountService
+    ) {
         this.loggedUserManagementService = loggedUserManagementService;
+        this.loginCountService = loginCountService;
     }
 
     public void setUsername(String username) {
@@ -26,6 +32,7 @@ public class LoginProcessor {
     }
 
     public boolean login() {
+        loginCountService.increment();
         String sessionUsername = loggedUserManagementService.getUsername();
         String sessionPassword = loggedUserManagementService.getPassword();
         if (sessionUsername == null) {
