@@ -19,7 +19,7 @@ public class PurchaseRepository {
     }
 
     public void storePurchase(Purchase purchase) {
-        String sql = "INSERT INTO purchase VALUES (DEFAULT, ?, ?)";
+        String sql = "INSERT INTO purchase VALUES (NULL, ?, ?)";
         jdbc.update(sql, purchase.getProduct(), purchase.getPrice());
     }
 
