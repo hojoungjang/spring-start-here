@@ -15,29 +15,29 @@ import com.zaxxer.hikari.HikariDataSource;
     basePackages = "com.github.hojoungjang.pt2_implementation.proxy"
 )
 public class ProjectConfig {
-    @Value("${custom.datasource.url}")
-    private String datasourceUrl;
+    // @Value("${custom.datasource.url}")
+    // private String datasourceUrl;
 
-    @Value("${custom.datasource.username}")
-    private String datasourceUsername;
+    // @Value("${custom.datasource.username}")
+    // private String datasourceUsername;
 
-    @Value("${custom.datasource.password}")
-    private String datasourcePassword;
+    // @Value("${custom.datasource.password}")
+    // private String datasourcePassword;
 
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
-    @Bean
-    public DataSource datasource() {
-        HikariDataSource dataSource = new HikariDataSource();
+    // @Bean
+    // public DataSource datasource() {
+    //     HikariDataSource dataSource = new HikariDataSource();
 
-        dataSource.setJdbcUrl(datasourceUrl);
-        dataSource.setUsername(datasourceUsername);
-        dataSource.setPassword(datasourcePassword);
-        dataSource.setConnectionTimeout(1000);
-        return dataSource;
-    }
+    //     dataSource.setJdbcUrl(datasourceUrl);
+    //     dataSource.setUsername(datasourceUsername);
+    //     dataSource.setPassword(datasourcePassword);
+    //     dataSource.setConnectionTimeout(1000);
+    //     return dataSource;
+    // }
 
 }
