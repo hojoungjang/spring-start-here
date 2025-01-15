@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.hojoungjang.pt2_implementation.exception.AccountNotFoundException;
 import com.github.hojoungjang.pt2_implementation.model.Account;
 import com.github.hojoungjang.pt2_implementation.repository.AccountRepository;
 
@@ -19,8 +20,8 @@ public class TransferService {
 
     @Transactional
     public void transferMoney(long idSender, long idReceiver, BigDecimal amount) {
-        Account sender = accountRepo.findAccountById(idSender);
-        Account receiver = accountRepo.findAccountById(idReceiver);
+        Account sender = accountRepo.findById(idSender).orElseThrow(() -> new AccountNotFoundException());
+        Account receiver = accountRepo.findById(idReceiver).orElseThrow(() -> new AccountNotFoundException());
 
         BigDecimal senderNewAmount = sender.getAmount().subtract(amount);
         BigDecimal receiverNewAmount = receiver.getAmount().add(amount);
@@ -32,7 +33,11 @@ public class TransferService {
         // throw new RuntimeException("Oh no something went wrong!");
     }
 
-    public List<Account> getAllAccounts() {
-        return accountRepo.findAllAccounts();
+    public Iterable<Account> getAllAccounts() {
+        return accountRepo.findAll();
+    }
+
+    public List<Account> findAccountsByName(String name) {
+        return accountRepo.findAccountsByName(name);
     }
 }
