@@ -2,7 +2,10 @@ package com.github.hojoungjang.pt2_implementation.model;
 
 import java.math.BigDecimal;
 
+import org.springframework.data.annotation.Id;
+
 public class Account {
+    @Id
     private long id;
     private String name;
     private BigDecimal amount;
